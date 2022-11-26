@@ -1,27 +1,25 @@
 {
-  "name": "create caron",
-  "version": "1.0.0",
-  "description": "",
+  "name": "create-want-app",
+  "version": "1.0.11",
+  "author": "kakachake",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "create-any": "index.js",
-    "cra": "index.js"
+    "create-want-app": "index.js",
+    "cwa": "index.js"
   },
   "files": [
     "index.js",
-    "template-*",
+    "template",
     "dist"
   ],
   "scripts": {
-    "dev": "unbuild --stub && node ./dist/index.mjs  ",
+    "dev": "unbuild --stub && node ./index",
     "build": "unbuild",
     "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/minimist": "^1.2.2",
     "@types/node": "^18.11.9",

@@ -3,19 +3,11 @@ import path from "node:path";
 import fs from "fs";
 import { fileURLToPath } from "node:url";
 
-import {
-  blue,
-  cyan,
-  green,
-  lightGreen,
-  lightRed,
-  magenta,
-  red,
-  reset,
-  yellow,
-} from "kolorist";
+import * as clist from "kolorist";
 import { capitalize } from "./utils";
-
+import { pathToFileURL } from "node:url";
+const { blue, cyan, green, lightGreen, lightRed, magenta, red, reset, yellow } =
+  clist;
 const colorArr = [
   blue,
   cyan,
@@ -44,22 +36,46 @@ export const getFrameworksFromDir = (org: string) => {
   const templates = fs.readdirSync(templateDir);
 
   templates.forEach((template, i) => {
-    const [fram, vari] = parseTemp(template);
-    if (!FRAMEWORKS.some((framework) => framework.name === fram)) {
-      FRAMEWORKS.push({
-        name: fram,
-        display: capitalize(fram),
-        color: colorArr[i % colorArr.length],
-        variants: [],
-      });
-    }
-    const framework = FRAMEWORKS.find((f) => f.name === fram);
-    if (framework) {
-      framework.variants.push({
-        name: fram + (vari ? "-" + vari : ""),
-        display: vari ? shortDict[vari] || capitalize(vari) : "JavaScript",
-        color: colorArr[i % colorArr.length],
-      });
+    const stat = fs.statSync(path.resolve(templateDir, template));
+    if (stat.isDirectory()) {
+      const [fram, vari] = parseTemp(template);
+      if (!FRAMEWORKS.some((framework) => framework.name === fram)) {
+        FRAMEWORKS.push({
+          name: fram,
+          display: capitalize(fram),
+          color: colorArr[i % colorArr.length],
+          variants: [],
+        });
+      }
+      const framework = FRAMEWORKS.find((f) => f.name === fram);
+      if (framework) {
+        framework.variants.push({
+          name: fram + (vari ? "-" + vari : ""),
+          display: vari ? shortDict[vari] || capitalize(vari) : "JavaScript",
+          color: colorArr[i % colorArr.length],
+        });
+      }
+    } else {
+      if (template.startsWith("cwa.config")) {
+        import(
+          pathToFileURL(path.resolve(templateDir, template)).toString()
+        ).then(async ({ default: config }) => {
+          FRAMEWORKS.push(
+            ...(config?.additional || []).map((frame, i) => {
+              return {
+                ...frame,
+                color: clist[frame?.color || colorArr[i % colorArr.length]],
+                variants: frame?.variants?.map((vari, j) => {
+                  return {
+                    ...vari,
+                    color: clist[vari?.color || colorArr[j % colorArr.length]],
+                  };
+                }),
+              };
+            })
+          );
+        });
+      }
     }
   });
   return FRAMEWORKS;

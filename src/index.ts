@@ -198,9 +198,10 @@ async function init() {
     const pkgManager = pkgInfo ? pkgInfo.name : "npm";
     const isYarn1 = pkgManager === "yarn" && pkgInfo.version.startsWith("1.");
 
-    const { customCommand } = FRAMEWORKS.flatMap((fram) => fram.variants).find(
-      (v) => v.name === template
-    );
+    const customCommand =
+      framework.customCommand ??
+      framework.variants.find((v) => v.name === template)?.customCommand ??
+      "";
 
     if (customCommand) {
       const fullCustomCommand = customCommand
@@ -274,7 +275,7 @@ async function init() {
     }
     console.log();
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     return;
   }
 }

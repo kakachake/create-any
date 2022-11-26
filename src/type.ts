@@ -4,6 +4,7 @@ export type Framework = {
   display: string;
   color: ColorFunc;
   variants: FrameworkVariant[];
+  customCommand?: string;
 };
 export type FrameworkVariant = {
   name: string;

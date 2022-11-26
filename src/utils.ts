@@ -58,7 +58,6 @@ export function copy(file, target) {
 
 export function copyDir(dir, target) {
   // 如果是文件夹，先创建文件夹
-  console.log(target);
 
   fs.mkdirSync(target, { recursive: true });
   const files = fs.readdirSync(dir);

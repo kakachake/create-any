@@ -10,6 +10,7 @@ import {
   yellow,
 } from "kolorist";
 import { Framework } from "./type";
+
 export const FRAMEWORKS: Framework[] = [
   {
     name: "react",
