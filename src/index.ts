@@ -54,7 +54,7 @@ const renameFiles: Record<string, string | undefined> = {
 };
 
 // 默认文件夹
-const defaultTargetDir = "vite-project";
+const defaultTargetDir = "want-project";
 
 async function init() {
   const argTargetDir = formatTargetDir(argv._[0]);
@@ -275,7 +275,7 @@ async function init() {
     }
     console.log();
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     return;
   }
 }

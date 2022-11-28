@@ -1,4 +1,4 @@
-# create-vite
+# create-want-app
 
 ## Scaffolding Your First Project
 
