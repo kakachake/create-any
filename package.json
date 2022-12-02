@@ -1,6 +1,6 @@
 {
   "name": "create-want-app",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "author": "kakachake",
   "main": "index.js",
   "type": "module",
